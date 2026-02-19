@@ -9,22 +9,15 @@
     "Aayush9029",
     "LunaticMuch",
     "pernielsentikaer",
-    "nbbaier"
+    "stelo",
+    "nbbaier",
+    "ridemountainpig"
   ],
   "categories": [
     "Developer Tools",
     "Productivity"
   ],
   "license": "MIT",
-  "preferences": [
-    {
-      "name": "access-token",
-      "type": "password",
-      "required": true,
-      "title": "Personal access tokens",
-      "description": "GitHub personal access tokens."
-    }
-  ],
   "commands": [
     {
       "name": "search-gists",
@@ -77,6 +70,28 @@
           "default": true
         },
         {
+          "name": "defaultGistTag",
+          "type": "dropdown",
+          "description": "Default filter tag for the gist item. If \"Remember Filter Tag\" is enabled, this will be ignored.",
+          "required": false,
+          "title": "Default Filter Tag",
+          "default": "My Gists",
+          "data": [
+            {
+              "title": "My Gists",
+              "value": "My Gists"
+            },
+            {
+              "title": "Starred Gists",
+              "value": "Starred Gists"
+            },
+            {
+              "title": "Public Gists",
+              "value": "Public Gists"
+            }
+          ]
+        },
+        {
           "name": "primaryAction",
           "type": "dropdown",
           "description": "Primary action for gist item.",
@@ -106,8 +121,9 @@
   ],
   "dependencies": {
     "@octokit/core": "^6.1.0",
-    "@raycast/api": "^1.77.3",
-    "@raycast/utils": "^1.16.1"
+    "@raycast/api": "^1.78.1",
+    "@raycast/utils": "^1.16.2",
+    "js-base64": "^3.7.2"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.8",

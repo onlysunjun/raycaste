@@ -1,4 +1,5 @@
 import { existsSync, readdirSync, readFile } from "fs";
+import { join } from "path";
 import { promisify } from "util";
 
 import { useCachedPromise, useCachedState } from "@raycast/utils";
@@ -69,13 +70,43 @@ function getFolders(bookmark: BookmarkFolder | BookmarkItem, hierarchy = ""): Fo
   return folders;
 }
 
+async function getChromiumProfilesFallback(path: string) {
+  if (!existsSync(path)) return { profiles: [], defaultProfile: "" };
+
+  let profiles;
+  try {
+    profiles = readdirSync(path, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && existsSync(join(path, d.name, "Bookmarks")))
+      .map((d) => ({ path: d.name, name: d.name }));
+  } catch {
+    return { profiles: [], defaultProfile: "" };
+  }
+
+  profiles.sort((a, b) => a.name.localeCompare(b.name));
+  const defaultProfile = profiles.find((p) => p.path === "Default")?.path || profiles[0]?.path || "";
+
+  return { profiles, defaultProfile };
+}
+
 async function getChromiumProfiles(path: string) {
   if (!existsSync(`${path}/Local State`)) {
     return { profiles: [], defaultProfile: "" };
   }
 
-  const file = await read(`${path}/Local State`, "utf-8");
-  const localState = JSON.parse(file);
+  let file: string;
+  try {
+    file = await read(`${path}/Local State`, "utf-8");
+  } catch {
+    // Handle permission errors (EPERM) or other file access errors
+    return getChromiumProfilesFallback(path);
+  }
+
+  let localState;
+  try {
+    localState = JSON.parse(file);
+  } catch {
+    return getChromiumProfilesFallback(path);
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const profileInfoCache: Record<string, any> = localState.profile.info_cache;
@@ -83,8 +114,12 @@ async function getChromiumProfiles(path: string) {
   const profiles = Object.entries(profileInfoCache)
     // Only keep profiles that have bookmarks
     .filter(([profilePath]) => {
-      const profileDirectory = readdirSync(`${path}/${profilePath}`);
-      return profileDirectory.includes("Bookmarks");
+      try {
+        const profileDirectory = readdirSync(`${path}/${profilePath}`);
+        return profileDirectory.includes("Bookmarks");
+      } catch {
+        return false;
+      }
     })
     .map(([path, profile]) => {
       return {
@@ -93,7 +128,8 @@ async function getChromiumProfiles(path: string) {
       };
     });
 
-  const defaultProfile = localState.profile?.last_used?.length > 0 ? localState.profile.last_used : profiles[0].path;
+  const defaultProfile =
+    localState.profile?.last_used?.length > 0 ? localState.profile.last_used : profiles[0]?.path || "";
 
   profiles.sort((a, b) => a.name?.localeCompare(b.name));
   return { profiles, defaultProfile };

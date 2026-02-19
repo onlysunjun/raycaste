@@ -1,6 +1,12 @@
 # Bear Changelog
 
-## [Fixes] - {PR_MERGE_DATE}
+## [✨ AI Enhancements] - 2025-02-21
+
+- Add AI Tool to "Create Note"
+- Add AI Tool to "Search Notes"
+- chore: update deps
+
+## [Fixes] - 2024-07-03
 
 - Tags don't appear in dropdown if all associated notes are either trashed or archived: [#13297](https://github.com/raycast/extensions/issues/13297)
 

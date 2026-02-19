@@ -1,5 +1,21 @@
 # Cal.com Share Meeting Links Changelog
 
+## [Generate private links] - 2025-10-28
+
+- Adds an action inside "Share Meeting Link" to generate and copy a one-time use private link (⌘ + S).
+
+## [Update] - 2025-04-14
+
+- Adds created at date to bookings, to show booking date
+
+## [Update] - 2025-04-01
+
+- Adds action to open availability troubleshooter for meeting links
+
+## [Update] - 2024-07-29
+
+- Display event prices
+
 ## [Visual refresh and Improvements] - 2024-07-04
 
 - Visual refresh for "View Bookings" and "Share Meeting Links" commands

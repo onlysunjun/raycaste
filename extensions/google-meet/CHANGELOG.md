@@ -1,5 +1,18 @@
 # Google Meet Changelog
 
+## [Improvement] - 2026-02-13
+
+- Make delay configurable by user
+- Add support for Zen Browser
+
+## [Improvement] - 2024-10-22
+
+- Add delay before reading meeting URL from browser
+
+## [Improvement] - 2024-07-19
+
+- Change the way to get the URL in some Chromium-based browsers
+
 ## [Improvement] - 2024-05-29
 
 - Change the way to get the URL in Arc Browser

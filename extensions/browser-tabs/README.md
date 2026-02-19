@@ -1,6 +1,6 @@
 # Browser Tabs
 
-Search and open tabs in Chrome, Safari, Edge, Arc, Brave, Vivaldi, Opera and Orion.
+Search and open tabs in Chrome, Safari, Edge, Arc, Brave, Vivaldi, Opera and Orion, etc.
 
 ## Supported Browsers
 
@@ -13,4 +13,5 @@ Search and open tabs in Chrome, Safari, Edge, Arc, Brave, Vivaldi, Opera and Ori
 ## Unsupported Browsers
 
 - **Firefox** (Gecko-based)
+- **Zen Browser** (Gecko-based)
 - Other Gecko-based browsers are not supported.

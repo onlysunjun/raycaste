@@ -88,6 +88,7 @@ export interface CalBookingResp {
     title: string;
     startTime: string;
     endTime: string;
+    createdAt: string;
     attendees: {
       email: string;
       name: string;
@@ -118,11 +119,20 @@ export interface CalBookingResp {
   }[];
 }
 
+interface CreatePrivateLinkResponse {
+  linkId: string;
+  eventTypeId: number;
+  isExpired: boolean;
+  bookingUrl: string;
+  expiresAt: string;
+}
+
 export interface updateBookingContent {
   status: string;
 }
 
 const defaultBaseUrl = "https://api.cal.com/v1/";
+const apiV2BaseUrl = "https://api.cal.com/v2/";
 const { token } = getPreferenceValues<Preferences>();
 
 const api = axios.create({
@@ -130,9 +140,21 @@ const api = axios.create({
   params: { apiKey: token },
 });
 
+const apiV2 = axios.create({
+  baseURL: apiV2BaseUrl,
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 async function calAPI<T>({ method = "GET", ...props }: AxiosRequestConfig) {
   const resp = await api.request<T>({ method, ...props });
   return resp.data;
+}
+
+async function calAPIV2<T>({ method = "GET", ...props }: AxiosRequestConfig) {
+  const resp = await apiV2.request<{ data: T }>({ method, ...props });
+  return resp.data.data;
 }
 
 export function useCurrentUser() {
@@ -186,10 +208,29 @@ export function cancelBooking(bookingId: number, reason: string) {
   });
 }
 
+export function createPrivateLinkForEventType(eventTypeId: number, signal: AbortSignal) {
+  return calAPIV2<CreatePrivateLinkResponse>({
+    method: "POST",
+    url: `/event-types/${eventTypeId}/private-links`,
+    data: {
+      maxUsageCount: 1,
+    },
+    signal,
+  });
+}
+
 export function formatDateTime(date: string) {
   return moment(date).format("Do MMM HH:mm a");
 }
 
 export function formatTime(date: string) {
   return moment(date).format("HH:mm a");
+}
+
+export function formatCurrency(price: number, currency: string) {
+  return (price / 100).toLocaleString(undefined, {
+    style: "currency",
+    currency: currency,
+    currencyDisplay: "narrowSymbol",
+  });
 }

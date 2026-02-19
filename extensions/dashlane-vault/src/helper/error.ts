@@ -1,4 +1,4 @@
-import { Toast, open, openExtensionPreferences } from "@raycast/api";
+import { Toast, captureException as captureExceptionInternal, open, openExtensionPreferences } from "@raycast/api";
 
 export const OpenPreferencesAction: Toast.ActionOptions = {
   title: "Open Preferences",
@@ -50,6 +50,19 @@ export class CLINotLoggedInError extends DisplayableError {
   }
 }
 
+export class TouchIDVerificationFailed extends DisplayableError {
+  name = "TouchIDVerificationFailed";
+  action: Toast.ActionOptions = {
+    title: "Show documentation (see under Biometrics)",
+    shortcut: { modifiers: ["cmd"], key: "u" },
+    onAction: () => open("https://www.raycast.com/tm.wrnr/dashlane-vault"),
+  };
+
+  constructor(stack?: string) {
+    super("Touch ID verification failed", stack);
+  }
+}
+
 export class ParseError extends DisplayableError {
   name = "ParseError";
 
@@ -73,6 +86,26 @@ export class TimeoutError extends DisplayableError {
   constructor(stack: string) {
     super("Timeout", stack);
   }
+}
+
+/**
+ * These errors are shown buz should not be send to raycast
+ */
+const uncapturedErrors = [
+  CLIVersionNotSupportedError,
+  CLINotLoggedInError,
+  MasterPasswordMissingError,
+  TimeoutError,
+  CLINotFoundError,
+  TouchIDVerificationFailed,
+];
+
+/**
+ * Captures unexpected errors to raycast
+ */
+export function captureException(error: unknown) {
+  if (uncapturedErrors.some((errorClass) => error instanceof errorClass)) return;
+  captureExceptionInternal(error);
 }
 
 export function getErrorAction(error: unknown) {

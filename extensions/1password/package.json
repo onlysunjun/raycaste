@@ -11,13 +11,21 @@
     "pernielsentikaer",
     "cb372",
     "henrik-dmg",
-    "spacedog",
-    "JakeMoosey",
     "superwhys",
-    "lukah"
+    "lukah",
+    "litomore",
+    "vimtor",
+    "pavelas"
   ],
-  "past_contributors": ["Davidwalser"],
-  "categories": ["Security"],
+  "past_contributors": [
+    "Davidwalser",
+    "JakeMoosey",
+    "spacedog",
+    "Lemon"
+  ],
+  "categories": [
+    "Security"
+  ],
   "license": "MIT",
   "commands": [
     {
@@ -25,7 +33,12 @@
       "title": "My Passwords",
       "subtitle": "1Password",
       "description": "List of all your 1Password items. Then open in your default browser, view items in 1Password, or open items in 1Password for editing.",
-      "keywords": ["1p", "1password", "password", "login"],
+      "keywords": [
+        "1p",
+        "1password",
+        "password",
+        "login"
+      ],
       "mode": "view"
     },
     {
@@ -33,7 +46,12 @@
       "title": "Auto Renew Authorization",
       "subtitle": "1Password",
       "description": "Renews the authorization each 9 minutes. Avoiding the prompt for user's password each use after 10 minutes.",
-      "keywords": ["1p", "1password", "password", "login"],
+      "keywords": [
+        "1p",
+        "1password",
+        "password",
+        "login"
+      ],
       "interval": "9m",
       "mode": "no-view",
       "disabledByDefault": true
@@ -43,7 +61,19 @@
       "title": "My Vaults",
       "subtitle": "1Password",
       "description": "List of all your 1Password vaults. Then open all items related to each vault.",
-      "keywords": ["1p", "1password", "password", "login"],
+      "keywords": [
+        "1p",
+        "1password",
+        "password",
+        "login"
+      ],
+      "mode": "view"
+    },
+    {
+      "name": "generate-password",
+      "title": "Generate Password",
+      "subtitle": "1Password",
+      "description": "Generate a random password with 1Password.",
       "mode": "view"
     }
   ],
@@ -86,6 +116,18 @@
         {
           "title": "Copy One-time Password",
           "value": "copy-one-time-password"
+        },
+        {
+          "title": "Paste Username",
+          "value": "paste-username"
+        },
+        {
+          "title": "Paste Password",
+          "value": "paste-password"
+        },
+        {
+          "title": "Paste One-time Password",
+          "value": "paste-one-time-password"
         }
       ],
       "default": "open-in-1password",
@@ -116,6 +158,18 @@
         {
           "title": "Copy One-time Password",
           "value": "copy-one-time-password"
+        },
+        {
+          "title": "Paste Username",
+          "value": "paste-username"
+        },
+        {
+          "title": "Paste Password",
+          "value": "paste-password"
+        },
+        {
+          "title": "Paste One-time Password",
+          "value": "paste-one-time-password"
         }
       ],
       "default": "open-in-browser",
@@ -152,23 +206,28 @@
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.59.0",
-    "@raycast/utils": "^1.4.9",
-    "fast-glob": "^3.2.12"
+    "@1password/sdk": "^0.4.0-beta.1",
+    "@raycast/api": "^1.103.6",
+    "@raycast/utils": "^2.2.2",
+    "fast-glob": "^3.3.3"
   },
   "devDependencies": {
-    "@raycast/eslint-config": "^1.0.6",
-    "@types/node": "^18.8.3",
-    "@types/react": "18.0.9",
-    "eslint": "^7.32.0",
-    "prettier": "^2.5.1",
-    "typescript": "^4.4.3"
+    "@raycast/eslint-config": "^2.1.1",
+    "@types/node": "22.13.10",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
   },
   "scripts": {
-    "build": "ray build -e dist",
+    "build": "ray build",
     "dev": "ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
-    "publish": "ray publish"
-  }
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  },
+  "platforms": [
+    "macOS"
+  ]
 }

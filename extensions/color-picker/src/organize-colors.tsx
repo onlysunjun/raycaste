@@ -3,6 +3,7 @@ import {
   ActionPanel,
   Alert,
   confirmAlert,
+  getFrontmostApplication,
   getPreferenceValues,
   Grid,
   Icon,
@@ -11,12 +12,12 @@ import {
   LaunchType,
   showToast,
 } from "@raycast/api";
-import { showFailureToast } from "@raycast/utils";
-import { useHistory } from "./history";
-import { getFormattedColor, getPreviewColor } from "./utils";
-import { HistoryItem } from "./types";
-import { EditTitle } from "./components/EditTitle";
+import { showFailureToast, usePromise } from "@raycast/utils";
 import CopyAsSubmenu from "./components/CopyAsSubmenu";
+import { EditTitle } from "./components/EditTitle";
+import { useHistory } from "./lib/history";
+import { HistoryItem } from "./lib/types";
+import { getFormattedColor, getPreviewColor } from "./lib/utils";
 
 const preferences: Preferences.OrganizeColors = getPreferenceValues();
 
@@ -74,6 +75,13 @@ export default function Command() {
 
 function Actions({ historyItem }: { historyItem: HistoryItem }) {
   const { remove, clear, edit } = useHistory();
+  const { data: frontmostApp } = usePromise(async () => {
+    try {
+      return await getFrontmostApplication();
+    } catch {
+      return null;
+    }
+  }, []);
 
   const color = historyItem.color;
   const formattedColor = getFormattedColor(color);
@@ -83,11 +91,19 @@ function Actions({ historyItem }: { historyItem: HistoryItem }) {
         {preferences.primaryAction === "copy" ? (
           <>
             <Action.CopyToClipboard content={formattedColor} />
-            <Action.Paste content={formattedColor} />
+            <Action.Paste
+              title={`Paste to ${frontmostApp?.name || "Active App"}`}
+              content={formattedColor}
+              icon={frontmostApp ? { fileIcon: frontmostApp.path } : Icon.Clipboard}
+            />
           </>
         ) : (
           <>
-            <Action.Paste content={formattedColor} />
+            <Action.Paste
+              title={`Paste to ${frontmostApp?.name || "Active App"}`}
+              content={formattedColor}
+              icon={frontmostApp ? { fileIcon: frontmostApp.path } : Icon.Clipboard}
+            />
             <Action.CopyToClipboard content={formattedColor} />
           </>
         )}

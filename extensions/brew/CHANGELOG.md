@@ -1,5 +1,79 @@
 # Brew Changelog
 
+## [Improvements] - 2026-02-19
+
+- Improve handling of abort signal when loading search command
+
+## [Improved Memory Usage] - 2026-02-16
+
+- Use chunking to significantly reduce working memory
+
+## [Metadata Detail Panel] - 2026-01-27
+
+- Added optional split-view metadata panel for search results
+- Enable "Show metadata panel in search results" in Search command preferences (default true)
+- Displays package description and metadata alongside the search list
+
+## [Improvements] - 2026-01-05
+
+- Add a toggle to filter installed packages, allowing users to hide dependencies and show only those explicitly "installed on request".
+
+## [Homebrew 5.0 Support] - 2025-12-16
+
+- Added compatibility with Homebrew 5.0
+  - Added preference to disable concurrent downloads (enabled by default in Homebrew 5.0)
+  - Added preference to opt-in to Homebrew's new internal API (96% smaller downloads)
+  - Updated documentation with Homebrew 5.0 compatibility information
+- Improved first-run experience with download progress indicators for large downloads (30 MB+)
+- Added hidden-by-default "Clear Cache" command for troubleshooting
+- Reordered Casks over Formulae in Search for better readability and discoverability
+- Optimized package loading with two-phase strategy (fast list, then full metadata)
+- Added lazy loading for package details to reduce initial load time
+- Added Upgrade view with clearer progress indicators and easier cancellation
+- Refactored codebase with improved error handling and logging
+
+## [Improvements] - 2025-12-01
+
+- Update dependencies and replace node-fetch with native fetch API
+- Upgrade react to 19.0.10
+
+## [Bug Fix] - 2025-11-03
+
+- Fixed an issue where the the terminal command may be mis-typed in the Raycast window
+
+## [Improvements] - 2025-02-17
+
+- Add a new action to open the Brew formula/cask page in the browser
+
+## [Improvements] - 2025-01-07
+
+- Optimized checkmark icon
+- Minor change on tint color and minor fixes
+- Updated metadata
+
+## [Improvements] - 2025-01-02
+
+- Add terminal option for Ghostty
+- Updated dependencies
+- Fixed linter error
+- Organized code
+
+## [Improvements & Bugfix] - 2024-09-22
+
+- Fix detail panel for tap that doesn't have a license ([#12507](https://github.com/raycast/extensions/issues/12507))
+- Add JSON Debug Info Action
+
+## [Improvements] - 2024-07-29
+
+- Added new terminal options for Alacritty, kitty, WezTerm and Hyper.
+- Used app icons for actions to run commands in terminals.
+- Apply Destructive style to Uninstall actions.
+- Fallback to Terminal.App in case the selected terminal app is not installed.
+
+## [Improvements] - 2024-06-14
+
+- Updated dependencies
+
 ## [Bug Fix] - 2024-07-03
 
 - Fix a crash that could occur when showing installed formula or cask

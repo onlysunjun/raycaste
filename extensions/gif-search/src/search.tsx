@@ -1,5 +1,3 @@
-import "./fetch-polyfill";
-
 import { useState } from "react";
 import { useCachedState } from "@raycast/utils";
 
@@ -46,23 +44,13 @@ export default function GifSearch() {
   const showAllRecents = searchService === GIF_SERVICE.RECENTS;
 
   let placeholder = `Search for GIFs${searchService ? ` on ${getServiceTitle(searchService)}` : ""}`;
-  if (showAllFavs) {
-    placeholder = "Search favorites";
-  }
-  if (showAllRecents) {
-    placeholder = "Search recents";
-  }
+  if (showAllFavs) placeholder = "Search favorites";
+  if (showAllRecents) placeholder = "Search recents";
 
   let emptyState = { text: "Enter a search above to get started…", icon: Icon.MagnifyingGlass };
-  if (showAllFavs) {
-    emptyState = { text: "Add some GIFs to your Favorites first…", icon: Icon.Clock };
-  }
-  if (showAllRecents) {
-    emptyState = { text: "Work with some GIFs first…", icon: Icon.Clock };
-  }
-  if (searchTerm.length > 0 && results?.length === 0) {
-    emptyState = { text: "No GIFs were found.", icon: Icon.Image };
-  }
+  if (showAllFavs) emptyState = { text: "Add some GIFs to your Favorites first…", icon: Icon.Clock };
+  if (showAllRecents) emptyState = { text: "Work with some GIFs first…", icon: Icon.Clock };
+  if (searchTerm.length > 0 && results?.length === 0) emptyState = { text: "No GIFs were found.", icon: Icon.Image };
 
   let sections = [
     ...(searchTerm.length === 0
@@ -108,6 +96,11 @@ export default function GifSearch() {
               icon={{ source: "tenor-logo-square-180.png" }}
             />
             <Grid.Dropdown.Item
+              title="Klipy"
+              value={GIF_SERVICE.KLIPY}
+              icon={{ source: "klipy-logo-square-180.png" }}
+            />
+            <Grid.Dropdown.Item
               title="Finer Gifs Club"
               value={GIF_SERVICE.FINER_GIFS}
               icon={{ source: "finergifs-logo.svg", tintColor: Color.PrimaryText }}
@@ -135,10 +128,9 @@ export default function GifSearch() {
           key={section.title}
           title={section.title}
           results={section.results ?? []}
+          isLocalGifSection={section.isLocalGifSection}
           term={searchTerm}
           service={searchService}
-          favoriteGifs={favoriteGifs}
-          isLocalGifSection={section.isLocalGifSection}
           mutate={mutate}
         />
       ))}
